@@ -1,5 +1,5 @@
 class PiecesController < ApplicationController
-
+  include PiecesHelper
 
   def new
      new_board
@@ -29,7 +29,9 @@ class PiecesController < ApplicationController
       p.color = 2
     end
     p.save
-    flash.notice = "#{session[:player]} won!" if vertical_win?(p.color) || horizontal_win?(p.color)||diagonal_win?(p.color)
+
+    @field = create_field
+    flash.now[:notice] = "#{session[:player]} won!" if vertical_win?(p.color) || horizontal_win?(p.color)||diagonal_win?(p.color)
     player_name_switch
     redirect_to pieces_path
   end
@@ -69,6 +71,7 @@ class PiecesController < ApplicationController
     end
   end
 
+
   def vertical_win?(symbol)
 
     0.upto(6) do |col|
@@ -105,5 +108,5 @@ class PiecesController < ApplicationController
         end
       end
     end
-
+  end
 end
